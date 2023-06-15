@@ -2,8 +2,12 @@ package com.ruoyi.web.controller.common;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.config.MinioProperties;
+import com.ruoyi.common.utils.minio.MinioUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,8 @@ public class CommonController
 
     @Autowired
     private ServerConfig serverConfig;
+    @Resource
+    private MinioProperties minioProperties;
 
     private static final String FILE_DELIMETER = ",";
 
@@ -92,6 +98,30 @@ public class CommonController
         catch (Exception e)
         {
             return AjaxResult.error(e.getMessage());
+        }
+    }
+    @PostMapping("upload/minio")
+    public AjaxResult uploadminio(MultipartFile file){
+        try {
+            long l = System.currentTimeMillis();
+            String fileName = l+file.getOriginalFilename();
+            MinioUtil.createBucket(minioProperties.getBucket());
+            MinioUtil.uploadFile(minioProperties.getBucket(),file,fileName);
+            AjaxResult ajaxResult = AjaxResult.success();
+            String url = MinioUtil.getPreSignedObjectUrl(minioProperties.getBucket(),fileName);
+
+            String[]  strs=url.split("\\?");
+            url = strs[0];
+            System.out.println(url);
+            url = java.net.URLDecoder.decode(url,"UTF-8");
+            ajaxResult.put("url",url);
+            ajaxResult.put("fileName",fileName);
+            ajaxResult.put("newFileName", FileUtils.getName(fileName));
+            ajaxResult.put("originalFilename", file.getOriginalFilename());
+            return ajaxResult;
+        }
+        catch (Exception e){
+            return AjaxResult.error("上传异常！");
         }
     }
 

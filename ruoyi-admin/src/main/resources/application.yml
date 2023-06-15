@@ -70,13 +70,13 @@ spring:
   # redis 配置
   redis:
     # 地址
-    host: localhost
+    host: 8.130.72.37
     # 端口，默认为6379
     port: 6379
     # 数据库索引
     database: 0
     # 密码
-    password: 
+    password: 123321
     # 连接超时时间
     timeout: 10s
     lettuce:
@@ -129,3 +129,14 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+minio:
+  #服务地址
+  endpoint: http://8.130.72.37:9000
+  #文件地址
+  fileHost: http://8.130.72.37:9000
+  #用户名
+  access-Key: minioadmin
+  #密码
+  secret-Key: minioadmin
+  #存储桶地址
+  bucket: rkxztimg

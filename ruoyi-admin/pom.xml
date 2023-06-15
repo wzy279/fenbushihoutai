@@ -60,6 +60,17 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.ruoyi.userMessage</groupId>
+            <artifactId>ruoyi-user</artifactId>
+            <version>3.8.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ruoyi.topic</groupId>
+            <artifactId>ruoyi-topic</artifactId>
+            <version>3.8.5</version>
+        </dependency>
 
     </dependencies>
 
